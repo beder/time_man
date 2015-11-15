@@ -7,6 +7,12 @@ Rails.application.routes.draw do
   # root 'welcome#index'
   root 'home#index'
 
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :activities, only: :index
+    end
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

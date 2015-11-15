@@ -1,6 +1,7 @@
 time_man = angular.module('time_man',[
   'templates',
   'ngRoute',
+  'ngResource',
   'controllers'
 ])
 
@@ -47,15 +48,3 @@ activities = [
 ]
 
 controllers = angular.module('controllers', [])
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location'
-  ($scope, $routeParams, $location)->
-    $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
-
-    DAY = 1000 * 60 * 60 * 24
-    $scope.date_from = $routeParams.date_from
-    $scope.date_to = $routeParams.date_to
-    results = activities
-    results = results.filter (activity)-> !$scope.date_from || (Math.round((activity.date.getTime() - (new Date($scope.date_from)).getTime())) / DAY) >= 0
-    results = results.filter (activity)-> !$scope.date_to || (Math.round((activity.date.getTime() - (new Date($scope.date_to)).getTime())) / DAY) <= 0
-    $scope.activities = results
-])

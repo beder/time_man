@@ -40,6 +40,15 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.around(:each, type: :feature, js: true) do |ex|
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+    self.use_transactional_fixtures = false
+    ex.run
+    self.use_transactional_fixtures = true
+    DatabaseCleaner.clean
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
