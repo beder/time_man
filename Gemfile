@@ -59,3 +59,5 @@ group :staging, :production do
 end
 
 gem 'angular-rails-templates', '0.2.0'
+
+ruby '2.2.1'
