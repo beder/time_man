@@ -55,3 +55,5 @@ group :staging, :production do
   gem 'rails_stdout_logging'
   gem 'rails_serve_static_assets'
 end
+
+gem 'angular-rails-templates', '0.2.0'
