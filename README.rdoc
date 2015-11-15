@@ -1,2 +1,3 @@
-# time_man
+== Time Man
+
 A simple time management system
