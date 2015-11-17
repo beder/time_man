@@ -1,0 +1,18 @@
+<header class="row">
+    <h1 class="text-center col-md-2 col-md-offset-5">Please log in</h1>
+</header>
+<section class="col-md-2 col-md-offset-5">
+    <form>
+        <div class="form-group row">
+            <label for="email" class="sr-only">From</label>
+            <input ng-model="email" name="email" type="text" autofocus class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group row">
+            <label for="password" class="sr-only">To</label>
+            <input ng-model="password" name="password" type="password" autofocus class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group row text-center">
+            <button ng-click="login(email, password)" class="btn btn-primary btn-lg">Log in</button> or <a href ng-click="signup()">Sign up</a>
+        </div>
+    </form>
+</section>

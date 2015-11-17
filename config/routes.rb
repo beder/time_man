@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      devise_scope :user do
+        resources :sessions, only: :create
+        resources :users, only: :create
+      end
       resources :activities, only: :index
     end
   end

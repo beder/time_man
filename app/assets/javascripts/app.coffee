@@ -2,7 +2,9 @@ time_man = angular.module('time_man',[
   'templates',
   'ngRoute',
   'ngResource',
-  'controllers'
+  'ngCookies',
+  'controllers',
+  'services'
 ])
 
 time_man.config(['$routeProvider',
@@ -12,39 +14,28 @@ time_man.config(['$routeProvider',
         templateUrl: 'index.html',
         controller: 'ActivitiesController'
       )
+      .when('/sessions/new',
+        templateUrl: 'sessions/new.html',
+        controller: 'SessionsController'
+      )
+      .when('/users/new',
+        templateUrl: 'users/new.html',
+        controller: 'UsersController'
+      )
 ])
 
-activities = [
-  {
-    id: 1
-    name: 'User registration and authentication'
-    date: new Date('2015-01-02')
-    hours: 12
-  },
-  {
-    id: 2
-    name: 'Activity management'
-    date: new Date('2015-03-04')
-    hours: 12
-  },
-  {
-    id: 3
-    name: 'User settings'
-    date: new Date('2015-05-06')
-    hours: 12
-  },
-  {
-    id: 4
-    name: 'Highlighting of under performance'
-    date: new Date('2015-07-08')
-    hours: 12
-  },
-  {
-    id: 5
-    name: 'Roles'
-    date: new Date('2015-09-10')
-    hours: 12
-  }
-]
+time_man.run(['$rootScope', '$location', '$cookieStore', '$http',
+  ($rootScope, $location, $cookieStore, $http)->
+    $rootScope.globals = $cookieStore.get('globals') or {}
+    if $rootScope.globals.currentSession?
+      $http.defaults.headers.common['Authorization'] = "Token token=#{$rootScope.globals.currentSession.token}"
+
+    $rootScope.$on('$locationChangeStart',
+      ()->
+        if $location.$$path not in ['/sessions/new', '/users/new'] and not $rootScope.globals.currentSession?
+          $location.path('/sessions/new')
+    )
+])
 
 controllers = angular.module('controllers', [])
+services = angular.module('services', [])

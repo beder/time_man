@@ -1,16 +1,20 @@
 require 'rails_helper'
+require 'support/api_request_helpers'
 
 describe Api::V1::ActivitiesController do
   render_views
 
-  describe 'index' do
-    before do
-      Activity.create!(name: 'User registration and authentication', date: '2015-01-02', hours: 1)
-      Activity.create!(name: 'Activity management',                  date: '2015-03-04', hours: 2)
-      Activity.create!(name: 'User settings',                        date: '2015-05-06', hours: 3)
-      Activity.create!(name: 'Highlighting of under performance',    date: '2015-07-08', hours: 4)
-      Activity.create!(name: 'Roles',                                date: '2015-09-10', hours: 5)
+  include ApiRequestHelpers
 
+  let!(:accept) { set_accept }
+  let(:user) { create(:user) }
+  let!(:authorize) { set_authorization(user) }
+
+  describe 'index' do
+    let!(:activities) { create_list(:activity, 5) }
+    let(:an_activity) { create(:activity, date: '2015-01-02') }
+    let(:another_activity) { create(:activity, date: '2015-03-04') }
+    before do
       xhr :get, :index, format: :json, date_from: date_from, date_to: date_to
     end
 
@@ -21,19 +25,19 @@ describe Api::V1::ActivitiesController do
     end
 
     context 'when the search finds results' do
-      let(:date_from) { '2015-01-02' }
-      let(:date_to) { '2015-03-04' }
+      let(:date_from) { an_activity.date }
+      let(:date_to) { another_activity.date }
       it 'should 200' do
         expect(response.status).to eq(200)
       end
       it 'should return two results' do
         expect(results.size).to eq(2)
       end
-      it "should include 'User registration and authentication'" do
-        expect(results.map(&extract_name)).to include('User registration and authentication')
+      it 'should include an activity' do
+        expect(results.map(&extract_name)).to include(an_activity.name)
       end
-      it "should include 'Activity management'" do
-        expect(results.map(&extract_name)).to include('Activity management')
+      it 'should include another activity' do
+        expect(results.map(&extract_name)).to include(another_activity.name)
       end
     end
 
