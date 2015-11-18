@@ -4,6 +4,23 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
   ($scope, $routeParams, $location, $resource, activities)->
     $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
 
+    $scope.add = (name, date, hours)->
+      activities.save(
+        null,
+        {
+          activity: {
+            name: name,
+            date: date,
+            hours: hours
+          }
+        },
+        (activity)=>
+          $scope.activities.push(activity)
+          @.name = null
+          @.date = null
+          @.hours = null
+      )
+
     $scope.date_from = $routeParams.date_from
     $scope.date_to = $routeParams.date_to
     activities.query(date_from: $routeParams.date_from, date_to: $routeParams.date_to, (results)-> $scope.activities = results)

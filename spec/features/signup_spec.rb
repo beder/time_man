@@ -1,19 +1,22 @@
 require 'rails_helper'
 
 feature 'Signing up', js: true do
+  let(:user) { build(:user) }
+
   scenario 'creating a user' do
     visit '/'
 
     click_on 'Sign up'
 
-    fill_in 'first_name', with: 'John'
-    fill_in 'last_name', with: 'Doe'
-    fill_in 'email', with: 'john.doe@example.com'
-    fill_in 'password', with: 'J0hn_D03'
-    fill_in 'password_confirmation', with: 'J0hn_D03'
+    fill_in 'first_name', with: user.first_name
+    fill_in 'last_name', with: user.last_name
+    fill_in 'email', with: user.email
+    fill_in 'password', with: user.password
+    fill_in 'password_confirmation', with: user.password_confirmation
 
     click_on 'Sign up'
 
-    expect(User.find_by_first_name('John')).should_not be_nil
+    expect(page).to have_content('Find Activities')
+    expect(User.find_by_first_name(user.first_name)).not_to be_nil
   end
 end
