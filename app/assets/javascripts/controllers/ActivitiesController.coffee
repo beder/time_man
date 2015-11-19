@@ -21,6 +21,27 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
           @.hours = null
       )
 
+    $scope.edit = (activity)->
+      $scope.editingActivity = activity
+      $scope.editedActivity = angular.copy(activity)
+
+    $scope.cancel = ()->
+      $scope.editingActivity = null
+
+    $scope.editing = (activity)->
+      $scope.editingActivity == activity
+
+    $scope.save = ()->
+      $scope.editingActivity.name = $scope.editedActivity.name
+      $scope.editingActivity.date = $scope.editedActivity.date
+      $scope.editingActivity.hours = $scope.editedActivity.hours
+      activities.update(
+        null,
+        $scope.editingActivity,
+        ()->
+          $scope.editingActivity = null
+      )
+
     $scope.date_from = $routeParams.date_from
     $scope.date_to = $routeParams.date_to
     activities.query(date_from: $routeParams.date_from, date_to: $routeParams.date_to, (results)-> $scope.activities = results)

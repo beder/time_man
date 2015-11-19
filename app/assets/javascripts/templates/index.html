@@ -22,24 +22,38 @@
     <ul class="list-unstyled">
         <li ng-repeat="activity in activities">
             <section class="well col-md-6 col-md-offset-3">
-                <h1 class="h3 col-md-6" style="margin-top: 0">
-                    <a href="#">{{activity.name}}</a>
-                </h1>
-                <div class="col-md-2">
-                    {{activity.date}}
+                <div class="col-md-6">
+                    <span ng-hide="editing(activity)">{{activity.name}}</span>
+                    <span ng-show="editing(activity)">
+                        <label for="edited_name" class="sr-only">Name</label>
+                        <input data-ng-model="editedActivity.name" name="edited_name" type="text" autofocus class="form-control" placeholder="Name">
+                    </span>
                 </div>
                 <div class="col-md-2">
-                    {{activity.hours}}
+                    <span ng-hide="editing(activity)">{{activity.date}}</span>
+                    <span ng-show="editing(activity)">
+                        <label for="edited_date" class="sr-only">Date</label>
+                        <input data-ng-model="editedActivity.date" name="edited_date" type="text" autofocus class="form-control" placeholder="Date">
+                    </span>
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-info">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <span ng-hide="editing(activity)">{{activity.hours}}</span>
+                    <span ng-show="editing(activity)">
+                        <label for="edited_hours" class="sr-only">Hours</label>
+                        <input data-ng-model="editedActivity.hours" name="edited_hours" type="text" autofocus class="form-control" placeholder="Hours">
+                    </span>
+                </div>
+                <div class="col-md-2">
+                    <button ng-hide="editing(activity)" ng-click="edit(activity)" class="btn btn-info">Edit</button>
+                    <button ng-hide="editing(activity)" class="btn btn-danger">Delete</button>
+                    <button ng-show="editing(activity)" ng-click="save()" class="btn btn-info">Save</button>
+                    <button ng-show="editing(activity)" ng-click="cancel()" class="btn btn-info">Cancel</button>
                 </div>
             </section>
         </li>
         <li>
             <section class="well col-md-6 col-md-offset-3">
-                <div class="h3 col-md-6" style="margin-top: 0">
+                <div class="col-md-6">
                     <label for="name" class="sr-only">Name</label>
                     <input ng-model="name" name="name" type="text" autofocus class="form-control" placeholder="Name">
                 </div>

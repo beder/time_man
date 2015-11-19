@@ -74,4 +74,26 @@ describe Api::V1::ActivitiesController do
       end
     end
   end
+
+  describe 'update' do
+    let(:activity) { create(:activity, name: 'Previous name') }
+    let(:edited_activity) { build(:activity, name: 'New name') }
+    before do
+      xhr :put, :update, format: :json, id: activity.id, activity: attributes_for(:activity, name: edited_activity.name)
+    end
+
+    describe 'response' do
+      subject { response }
+
+      it { is_expected.to have_http_status(:ok) }
+
+      it { is_expected.to render_template(:update) }
+    end
+
+    describe 'result name' do
+      subject(:result_name) { JSON.parse(response.body)['name'] }
+
+      it { is_expected.to eq(edited_activity.name) }
+    end
+  end
 end
