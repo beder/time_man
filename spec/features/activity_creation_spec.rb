@@ -15,7 +15,7 @@ feature 'Creating activities', js: true do
     fill_in 'hours', with: an_activity.hours
     click_on 'Add'
 
-    expect(Activity.find_by_name(an_activity.name)).not_to be_nil
+    expect(user.activities.find_by_name(an_activity.name)).not_to be_nil
     expect(page).to have_content(an_activity.name)
   end
 end

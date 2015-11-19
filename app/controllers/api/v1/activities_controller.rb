@@ -1,14 +1,15 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
+  before_action :load_activities, only: :index
   before_action :load_activity, only: [:update, :destroy]
 
   def create
-    @activity = Activity.create(activity_params)
+    @activity = user.activities.create(activity_params)
     render status: :created
   end
 
   def index
-    @activities = Activity.happened_after(params[:date_from])
-                          .happened_before(params[:date_to])
+    @activities = @activities.happened_after(params[:date_from])
+                             .happened_before(params[:date_to])
   end
 
   def update
@@ -16,7 +17,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def destroy
-    @activity.destroy
+    user.activities.destroy(@activity)
     head(:ok)
   end
 
@@ -27,6 +28,14 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def load_activity
-    @activity = Activity.find(params[:id])
+    @activity = user.activities.find(params[:id])
+  end
+
+  def load_activities
+    @activities = user.activities
+  end
+
+  def user
+    current_user
   end
 end

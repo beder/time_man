@@ -1,4 +1,6 @@
 class Activity < ActiveRecord::Base
+  belongs_to :user
+
   scope :happened_after, lambda { |date_from|
     date_from.present? ? where('date >= ?', date_from) : where({})
   }

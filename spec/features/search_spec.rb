@@ -3,8 +3,8 @@ require 'rails_helper'
 feature 'Searching for activities', js: true do
   let(:user) { create(:user) }
   let!(:activities) { create_list(:activity, 5) }
-  let(:an_activity) { create(:activity, name: 'March activity', date: '2015-03-04') }
-  let(:another_activity) { create(:activity, name: 'May activity', date: '2015-05-06') }
+  let(:an_activity) { create(:activity, name: 'March activity', date: '2015-03-04', user: user) }
+  let(:another_activity) { create(:activity, name: 'May activity', date: '2015-05-06', user: user) }
 
   scenario 'finding activities' do
     visit '/'

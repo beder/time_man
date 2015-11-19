@@ -32,9 +32,9 @@ describe Api::V1::ActivitiesController do
   end
 
   describe 'index' do
-    let!(:activities) { create_list(:activity, 5) }
-    let(:an_activity) { create(:activity, name: 'An activity', date: '2015-01-02') }
-    let(:another_activity) { create(:activity, name: 'Another activity', date: '2015-03-04') }
+    let!(:activities) { create_list(:activity, 5, user: user) }
+    let(:an_activity) { create(:activity, name: 'An activity', date: '2015-01-02', user: user) }
+    let(:another_activity) { create(:activity, name: 'Another activity', date: '2015-03-04', user: user) }
     before do
       xhr :get, :index, format: :json, date_from: date_from, date_to: date_to
     end
@@ -82,7 +82,7 @@ describe Api::V1::ActivitiesController do
   end
 
   describe 'update' do
-    let(:activity) { create(:activity, name: 'Previous name') }
+    let(:activity) { create(:activity, name: 'Previous name', user: user) }
     let(:edited_activity) { build(:activity, name: 'New name') }
     before do
       xhr :put, :update, format: :json, id: activity.id, activity: attributes_for(:activity, name: edited_activity.name)
@@ -104,7 +104,7 @@ describe Api::V1::ActivitiesController do
   end
 
   describe 'destroy' do
-    let(:activity) { create(:activity) }
+    let(:activity) { create(:activity, user: user) }
     before do
       xhr :delete, :destroy, format: :json, id: activity.id
     end
