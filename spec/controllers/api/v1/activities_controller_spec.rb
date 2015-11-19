@@ -11,9 +11,9 @@ describe Api::V1::ActivitiesController do
   let!(:authorize) { set_authorization(user) }
 
   describe 'create' do
-    let(:activity) { build(:activity) }
+    let(:activity_attributes) { attributes_for(:activity, name: 'New activity') }
     before do
-      xhr :post, :create, format: :json, activity: attributes_for(:activity)
+      xhr :post, :create, format: :json, activity: activity_attributes
     end
 
     describe 'response' do
@@ -22,6 +22,12 @@ describe Api::V1::ActivitiesController do
       it { is_expected.to have_http_status(:created) }
 
       it { is_expected.to render_template(:create) }
+    end
+
+    describe 'result name' do
+      subject(:result_name) { JSON.parse(response.body)['name'] }
+
+      it { is_expected.to eq(activity_attributes[:name]) }
     end
   end
 
@@ -94,6 +100,23 @@ describe Api::V1::ActivitiesController do
       subject(:result_name) { JSON.parse(response.body)['name'] }
 
       it { is_expected.to eq(edited_activity.name) }
+    end
+  end
+
+  describe 'destroy' do
+    let(:activity) { create(:activity) }
+    before do
+      xhr :delete, :destroy, format: :json, id: activity.id
+    end
+
+    describe 'response' do
+      subject { response }
+
+      it { is_expected.to have_http_status(:ok) }
+    end
+
+    it 'deletes the activity' do
+      expect(Activity.find_by_id(activity.id)).to be_nil
     end
   end
 end

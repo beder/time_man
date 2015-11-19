@@ -3,6 +3,7 @@ time_man = angular.module('time_man',[
   'ngRoute',
   'ngResource',
   'ngCookies',
+  'ui.bootstrap',
   'controllers',
   'services'
 ])

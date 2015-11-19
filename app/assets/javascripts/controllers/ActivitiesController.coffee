@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$resource', 'activities',
-  ($scope, $routeParams, $location, $resource, activities)->
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$resource', '$uibModal', 'activities',
+  ($scope, $routeParams, $location, $resource, $uibModal, activities)->
     $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->
@@ -40,6 +40,25 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
         $scope.editingActivity,
         ()->
           $scope.editingActivity = null
+      )
+
+    $scope.delete = (activity)->
+      modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'modals/activity_deletion_confirmation.html',
+        controller: 'ActivityDeletionConfirmationController',
+        resolve: {
+          name: ()->
+            activity.name
+        }
+      })
+      modalInstance.result.then(()->
+        activities.delete(
+          null,
+          activity,
+          ()->
+            $scope.activities = $scope.activities.filter (a)-> a isnt activity
+        )
       )
 
     $scope.date_from = $routeParams.date_from

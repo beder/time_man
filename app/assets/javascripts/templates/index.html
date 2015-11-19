@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-2">
                     <button ng-hide="editing(activity)" ng-click="edit(activity)" class="btn btn-info">Edit</button>
-                    <button ng-hide="editing(activity)" class="btn btn-danger">Delete</button>
+                    <button ng-hide="editing(activity)" ng-click="delete(activity)" class="btn btn-danger">Delete</button>
                     <button ng-show="editing(activity)" ng-click="save()" class="btn btn-info">Save</button>
                     <button ng-show="editing(activity)" ng-click="cancel()" class="btn btn-info">Cancel</button>
                 </div>

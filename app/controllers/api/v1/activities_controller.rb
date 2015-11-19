@@ -1,5 +1,5 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
-  before_action :load_activity, only: :update
+  before_action :load_activity, only: [:update, :destroy]
 
   def create
     @activity = Activity.create(activity_params)
@@ -13,6 +13,11 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   def update
     @activity.update(activity_params)
+  end
+
+  def destroy
+    @activity.destroy
+    head(:ok)
   end
 
   private
