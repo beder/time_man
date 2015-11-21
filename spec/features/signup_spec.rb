@@ -18,5 +18,6 @@ feature 'Signing up', js: true do
 
     expect(page).to have_content('Find Activities')
     expect(User.find_by_first_name(user.first_name)).not_to be_nil
+    expect(User.find_by_first_name(user.first_name).role.to_sym).to eq(:user)
   end
 end

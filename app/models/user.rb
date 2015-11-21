@@ -3,5 +3,13 @@ class User < ActiveRecord::Base
   # :recoverable, :rememberable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,:trackable, :validatable
 
+  enum role: %i(user manager admin)
+
+  after_initialize :set_default_role
+
   has_many :activities
+
+  def set_default_role
+    self.role ||= :user if self.new_record?
+  end
 end
