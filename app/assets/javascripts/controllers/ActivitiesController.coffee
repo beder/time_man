@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'activities',
-  ($scope, $routeParams, $location, $uibModal, activities)->
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'activities', 'authentication', 'users',
+  ($scope, $routeParams, $location, $uibModal, activities, authentication, users)->
     $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->
@@ -61,7 +61,24 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
         )
       )
 
+    $scope.fulfillmentClass = (activity)->
+      hoursPerDay = $scope.activities
+        .filter (a)-> a.date == activity.date
+        .reduce ((sum, a)-> sum + a.hours) , 0
+
+      if hoursPerDay >= $scope.hoursPerDay then 'panel-success' else 'panel-danger'
+
     $scope.date_from = $routeParams.date_from
+
     $scope.date_to = $routeParams.date_to
+
+    users.get(
+      {
+        userId: authentication.getSession().user.id
+      },
+      (user)->
+        $scope.hoursPerDay = user.hours_per_day
+    )
+
     activities.query(date_from: $routeParams.date_from, date_to: $routeParams.date_to, (results)-> $scope.activities = results)
 ])

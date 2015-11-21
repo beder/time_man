@@ -19,56 +19,58 @@
 <hr>
 <section class="row" ng-if="activities">
     <h1 class="text-center h2">Results</h1>
-    <ul class="list-unstyled">
-        <li ng-repeat="activity in activities">
-            <section class="well col-md-6 col-md-offset-3">
-                <div class="col-md-6">
-                    <span ng-hide="editing(activity)">{{activity.name}}</span>
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div ng-repeat="activity in activities" class="row panel {{fulfillmentClass(activity)}}">
+                <div class="panel-heading">
+                    <h3 ng-hide="editing(activity)" class="panel-title">{{activity.name}}</h3>
                     <span ng-show="editing(activity)">
                         <label for="edited_name" class="sr-only">Name</label>
                         <input data-ng-model="editedActivity.name" name="edited_name" type="text" autofocus class="form-control" placeholder="Name">
                     </span>
                 </div>
-                <div class="col-md-2">
-                    <span ng-hide="editing(activity)">{{activity.date}}</span>
-                    <span ng-show="editing(activity)">
-                        <label for="edited_date" class="sr-only">Date</label>
-                        <input data-ng-model="editedActivity.date" name="edited_date" type="text" autofocus class="form-control" placeholder="Date">
-                    </span>
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <span ng-hide="editing(activity)">{{activity.date}}</span>
+                        <span ng-show="editing(activity)">
+                            <label for="edited_date" class="sr-only">Date</label>
+                            <input data-ng-model="editedActivity.date" name="edited_date" type="text" autofocus class="form-control" placeholder="Date">
+                        </span>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <span ng-hide="editing(activity)">{{activity.hours}}</span>
+                        <span ng-show="editing(activity)">
+                            <label for="edited_hours" class="sr-only">Hours</label>
+                            <input data-ng-model="editedActivity.hours" name="edited_hours" type="text" autofocus class="form-control" placeholder="Hours">
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <button ng-hide="editing(activity)" ng-click="edit(activity)" class="btn btn-primary">Edit</button>
+                        <button ng-hide="editing(activity)" ng-click="delete(activity)" class="btn btn-danger">Delete</button>
+                        <button ng-show="editing(activity)" ng-click="save()" class="btn btn-primary">Save</button>
+                        <button ng-show="editing(activity)" ng-click="cancel()" class="btn btn-default">Cancel</button>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <span ng-hide="editing(activity)">{{activity.hours}}</span>
-                    <span ng-show="editing(activity)">
-                        <label for="edited_hours" class="sr-only">Hours</label>
-                        <input data-ng-model="editedActivity.hours" name="edited_hours" type="text" autofocus class="form-control" placeholder="Hours">
-                    </span>
-                </div>
-                <div class="col-md-2">
-                    <button ng-hide="editing(activity)" ng-click="edit(activity)" class="btn btn-info">Edit</button>
-                    <button ng-hide="editing(activity)" ng-click="delete(activity)" class="btn btn-danger">Delete</button>
-                    <button ng-show="editing(activity)" ng-click="save()" class="btn btn-info">Save</button>
-                    <button ng-show="editing(activity)" ng-click="cancel()" class="btn btn-info">Cancel</button>
-                </div>
-            </section>
-        </li>
-        <li>
-            <section class="well col-md-6 col-md-offset-3">
-                <div class="col-md-6">
+            </div>
+            <div class="row panel panel-default">
+                <div class="panel-heading">
                     <label for="name" class="sr-only">Name</label>
                     <input ng-model="name" name="name" type="text" autofocus class="form-control" placeholder="Name">
                 </div>
-                <div class="col-md-2">
-                    <label for="date" class="sr-only">Date</label>
-                    <input ng-model="date" name="date" type="text" autofocus class="form-control" placeholder="Date">
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <label for="date" class="sr-only">Date</label>
+                        <input ng-model="date" name="date" type="text" autofocus class="form-control" placeholder="Date">
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <label for="hours" class="sr-only">Hours</label>
+                        <input ng-model="hours" name="hours" type="text" autofocus class="form-control" placeholder="Hours">
+                    </div>
+                    <div class="col-md-4">
+                        <button ng-click="add(name, date, hours)" class="btn btn-primary">Add</button>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label for="hours" class="sr-only">Hours</label>
-                    <input ng-model="hours" name="hours" type="text" autofocus class="form-control" placeholder="Hours">
-                </div>
-                <div class="col-md-2">
-                    <button ng-click="add(name, date, hours)" class="btn btn-info">Add</button>
-                </div>
-            </section>
-        </li>
-    </ul>
+            </div>
+        </div>
+    </div>
 </section>
