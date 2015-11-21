@@ -1,19 +1,22 @@
-class Api::V1::UsersController < Devise::RegistrationsController
+class Api::V1::UsersController < Api::V1::ApiController
+  include TokenAuthenticationHandler
 
-  protect_from_forgery with: :null_session
+  before_action :load_user, only: [:show, :update]
 
-  before_action :configure_permitted_parameters
+  def show
+  end
 
-  def create
-    build_resource(sign_up_params)
-    head :conflict and return if !resource.valid? && resource.errors[:email].include?('has already been taken')
-    resource.save ? head(:created) : raise(ArgumentError.new(@user.errors.messages))
+  def update
+    @user.update(update_user_params)
   end
 
   protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) << :first_name
-    devise_parameter_sanitizer.for(:sign_up) << :last_name
+  def load_user
+    @user = current_user
+  end
+
+  def update_user_params
+    params.require(:user).permit(:hours_per_day)
   end
 end

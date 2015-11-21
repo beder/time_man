@@ -8,7 +8,7 @@ feature 'Creating activities', js: true do
     visit '/'
     fill_in 'email', with: user.email
     fill_in 'password', with: user.password
-    click_on 'Log in'
+    click_button 'Log in'
 
     fill_in 'name', with: an_activity.name
     fill_in 'date', with: an_activity.date

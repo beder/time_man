@@ -11,8 +11,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_scope :user do
         resources :sessions, only: :create
-        resources :users, only: :create
+        resources :registrations, only: :create
       end
+      resources :users, only: [:show, :update]
       resources :activities, only: [:create, :index, :update, :destroy]
     end
   end

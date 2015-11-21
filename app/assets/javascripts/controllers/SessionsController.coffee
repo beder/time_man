@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('SessionsController', ['$rootScope', '$scope', '$routeParams', '$location', '$cookieStore', '$http', 'sessions',
-  ($rootScope, $scope, $routeParams, $location, $cookieStore, $http, sessions)->
+controllers.controller('SessionsController', ['$scope', '$location', 'sessions', 'authentication',
+  ($scope, $location, sessions, authentication)->
     $scope.login = (email, password)->
       sessions.save(
         null,
@@ -12,11 +12,7 @@ controllers.controller('SessionsController', ['$rootScope', '$scope', '$routePar
           }
         },
         (session)->
-          $rootScope.globals = {
-            currentSession: session
-          }
-          $http.defaults.headers.common['Authorization'] = "Token token=#{$rootScope.globals.currentSession.token}"
-          $cookieStore.put('globals', $rootScope.globals);
+          authentication.setSession(session)
           $location.path('/')
       )
 

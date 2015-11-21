@@ -1,0 +1,15 @@
+<header class="row">
+    <h1 class="text-center col-md-2 col-md-offset-5">Settings</h1>
+</header>
+<section class="col-md-2 col-md-offset-5">
+    <form>
+        <div class="form-group row">
+            <label for="hours_per_day" class="sr-only">Hours per day</label>
+            <input ng-model="user.hours_per_day" name="hours_per_day" type="text" autofocus class="form-control" placeholder="Hours per day">
+        </div>
+        <div class="form-group row text-center">
+            <button ng-click="save()" class="btn btn-primary">Save</button>
+            <button ng-click="cancel()" class="btn">Cancel</button>
+        </div>
+    </form>
+</section>

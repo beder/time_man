@@ -10,7 +10,7 @@ feature 'Searching for activities', js: true do
     visit '/'
     fill_in 'email', with: user.email
     fill_in 'password', with: user.password
-    click_on 'Log in'
+    click_button 'Log in'
 
     fill_in 'date_from', with: an_activity.date
     fill_in 'date_to', with: another_activity.date

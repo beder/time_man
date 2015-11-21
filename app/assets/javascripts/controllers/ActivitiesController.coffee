@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$resource', '$uibModal', 'activities',
-  ($scope, $routeParams, $location, $resource, $uibModal, activities)->
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'activities',
+  ($scope, $routeParams, $location, $uibModal, activities)->
     $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->

@@ -1,5 +1,41 @@
 <div ng-app="time_man">
-  <div class="view-container">
-    <div ng-view class="view-frame animate-view"></div>
+  <div ng-controller="MainController as main">
+
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href ng-click="activities()">TimeMan</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right" ng-hide="loggedIn">
+            <li><a href ng-click="login()">Log in</a></li>
+            <li><a href ng-click="signup()">Sign Up</a></li>
+          </ul>
+          <ul class="nav navbar-nav" ng-show="loggedIn">
+            <li><a href ng-click="activities()">Activities</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" ng-show="loggedIn">
+            <li class="dropdown" uib-dropdown>
+              <a href="#" class="dropdown-toggle" uib-dropdown-toggle role="button" aria-haspopup="true" aria-expanded="false">{{user_name}}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href ng-click="settings()">Settings</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href ng-click="logout()">Log out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="view-container">
+      <div ng-view class="view-frame animate-view"></div>
+    </div>
   </div>
 </div>

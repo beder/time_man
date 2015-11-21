@@ -20,20 +20,20 @@ time_man.config(['$routeProvider',
         controller: 'SessionsController'
       )
       .when('/users/new',
-        templateUrl: 'users/new.html',
-        controller: 'UsersController'
+        templateUrl: 'registrations/new.html',
+        controller: 'RegistrationsController'
+      )
+      .when('/settings',
+        templateUrl: 'settings/edit.html',
+        controller: 'SettingsController'
       )
 ])
 
-time_man.run(['$rootScope', '$location', '$cookieStore', '$http',
-  ($rootScope, $location, $cookieStore, $http)->
-    $rootScope.globals = $cookieStore.get('globals') or {}
-    if $rootScope.globals.currentSession?
-      $http.defaults.headers.common['Authorization'] = "Token token=#{$rootScope.globals.currentSession.token}"
-
+time_man.run(['$rootScope', '$cookieStore', '$location', 'authentication',
+  ($rootScope, $cookieStore, $location, authentication)->
     $rootScope.$on('$locationChangeStart',
       ()->
-        if $location.$$path not in ['/sessions/new', '/users/new'] and not $rootScope.globals.currentSession?
+        if $location.$$path not in ['/sessions/new', '/users/new'] and not authentication.getSession()?
           $location.path('/sessions/new')
     )
 ])
