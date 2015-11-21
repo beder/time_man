@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Deleting activities', js: true do
   let(:user) { create(:user) }
-  let!(:an_activity) { create(:activity, user: user) }
+  let!(:activity) { create(:activity, user: user) }
 
   scenario 'deleting an activity' do
     visit '/'
@@ -14,7 +14,6 @@ feature 'Deleting activities', js: true do
 
     click_on 'OK'
 
-    expect(user.activities.find_by_name(an_activity.name)).to be_nil
-    expect(page).not_to have_content(an_activity.name)
+    expect(page).not_to have_content(activity.name)
   end
 end

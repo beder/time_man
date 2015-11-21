@@ -23,6 +23,10 @@ time_man.config(['$routeProvider',
         templateUrl: 'registrations/new.html',
         controller: 'RegistrationsController'
       )
+      .when('/users',
+        templateUrl: 'users/index.html',
+        controller: 'UsersIndexController'
+      )
       .when('/settings',
         templateUrl: 'settings/edit.html',
         controller: 'SettingsController'

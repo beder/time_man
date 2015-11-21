@@ -1,0 +1,100 @@
+<section class="row" ng-if="users">
+    <h1 class="text-center h1">Users</h1>
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div ng-repeat="user in users" class="row panel panel-default" id="user_{{user.id}}">
+                <div class="panel-heading">
+                    <div ng-hide="editing(user)" class="row">
+                        <div class="col-md-8">
+                            <h2 class="panel-title">{{user.first_name}} {{user.last_name}}</h2>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="panel-title">{{user.role}}</h4>
+                        </div>
+                    </div>
+                    <div ng-show="editing(user)" class="row">
+                        <div class="col-md-4">
+                            <label for="edited_first_name" class="sr-only">First name</label>
+                            <input data-ng-model="editedUser.first_name" name="edited_first_name" type="text" autofocus class="form-control" placeholder="First name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edited_last_name" class="sr-only">Last name</label>
+                            <input data-ng-model="editedUser.last_name" name="edited_last_name" type="text" autofocus class="form-control" placeholder="Last name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edited_role" class="sr-only">Role</label>
+                            <input data-ng-model="editedUser.role" name="edited_role" type="text" autofocus class="form-control" placeholder="Role">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <span ng-hide="editing(user)">{{user.email}}</span>
+                        <span ng-show="editing(user)">
+                            <label for="edited_email" class="sr-only">Email</label>
+                            <input data-ng-model="editedUser.email" name="edited_email" type="text" autofocus class="form-control" placeholder="Email">
+                        </span>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <span ng-hide="editing(user)">{{user.hours_per_day}}</span>
+                        <span ng-show="editing(user)">
+                            <label for="edited_hours_per_day" class="sr-only">Hours per day</label>
+                            <input data-ng-model="editedUser.hours_per_day" name="edited_hours_per_day" type="text" autofocus class="form-control" placeholder="Hours per day">
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <button ng-hide="editing(user)" ng-click="edit(user)" class="btn btn-primary">Edit</button>
+                        <button ng-hide="editing(user)" ng-click="delete(user)" class="btn btn-danger">Delete</button>
+                        <button ng-show="editing(user)" ng-click="save()" class="btn btn-primary">Save</button>
+                        <button ng-show="editing(user)" ng-click="cancel()" class="btn btn-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="first_name" class="sr-only">First name</label>
+                            <input ng-model="first_name" name="first_name" type="text" autofocus class="form-control" placeholder="First name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="last_name" class="sr-only">Last name</label>
+                            <input ng-model="last_name" name="last_name" type="text" autofocus class="form-control" placeholder="Last name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="role" class="sr-only">Role</label>
+                            <input ng-model="role" name="role" type="text" autofocus class="form-control" placeholder="Role">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="email" class="sr-only">Email</label>
+                            <input ng-model="email" name="email" type="text" autofocus class="form-control" placeholder="Email">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="hours_per_day" class="sr-only">Hours per day</label>
+                            <input ng-model="hours_per_day" name="hours_per_day" type="text" autofocus class="form-control" placeholder="Hours per day">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="password" class="sr-only">Password</label>
+                            <input ng-model="password" name="password" type="password" autofocus class="form-control" placeholder="Password">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="password_confirmation" class="sr-only">Password confirmation</label>
+                            <input ng-model="password_confirmation" name="password_confirmation" type="password" autofocus class="form-control" placeholder="Password confirmation">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-6 col-md-6">
+                            <button ng-click="add(first_name, last_name, role, email, hours_per_day, password, password_confirmation)" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

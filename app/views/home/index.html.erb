@@ -19,6 +19,7 @@
           </ul>
           <ul class="nav navbar-nav" ng-show="loggedIn">
             <li><a href ng-click="activities()">Activities</a></li>
+            <li><a href ng-show="canManageUsers" ng-click="users()">Users</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" ng-show="loggedIn">
             <li class="dropdown" uib-dropdown>

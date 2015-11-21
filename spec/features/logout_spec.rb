@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature 'Logging out', js: true do
   let(:user) { create(:user) }
-  let(:an_activity) { build(:activity) }
 
   scenario 'logging out' do
     visit '/'

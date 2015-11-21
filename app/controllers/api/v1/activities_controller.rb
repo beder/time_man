@@ -1,9 +1,8 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
-  before_action :load_activities, only: :index
-  before_action :load_activity, only: [:update, :destroy]
+  load_and_authorize_resource
 
   def create
-    @activity = user.activities.create(activity_params)
+    @activity.save
     render status: :created
   end
 
@@ -13,7 +12,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def update
-    @activity.update(activity_params)
+    @activity.update_attributes(activity_params)
   end
 
   def destroy
@@ -25,14 +24,6 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   def activity_params
     params.require(:activity).permit(:name, :date, :hours)
-  end
-
-  def load_activity
-    @activity = user.activities.find(params[:id])
-  end
-
-  def load_activities
-    @activities = user.activities
   end
 
   def user

@@ -45,11 +45,13 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
     $scope.delete = (activity)->
       modalInstance = $uibModal.open({
         animation: true,
-        templateUrl: 'modals/activity_deletion_confirmation.html',
-        controller: 'ActivityDeletionConfirmationController',
+        templateUrl: 'modals/deletion_confirmation.html',
+        controller: 'DeletionConfirmationController',
         resolve: {
           name: ()->
             activity.name
+          objectType: ()->
+            'activity'
         }
       })
       modalInstance.result.then(()->

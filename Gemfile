@@ -62,4 +62,6 @@ gem 'angular-rails-templates', '0.2.0'
 
 gem 'jwt'
 
+gem 'cancancan'
+
 ruby '2.2.1'

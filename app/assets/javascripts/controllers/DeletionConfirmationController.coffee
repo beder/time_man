@@ -1,7 +1,8 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivityDeletionConfirmationController', ['$scope', '$uibModalInstance', 'name',
-  ($scope, $uibModalInstance, name)->
+controllers.controller('DeletionConfirmationController', ['$scope', '$uibModalInstance', 'objectType', 'name',
+  ($scope, $uibModalInstance, objectType, name)->
+    $scope.objectType = objectType
     $scope.name = name
 
     $scope.ok = ()->
