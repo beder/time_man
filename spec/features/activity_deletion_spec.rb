@@ -15,5 +15,6 @@ feature 'Deleting activities', js: true do
     click_on 'OK'
 
     expect(page).not_to have_content(activity.name)
+    expect(Activity.find_by_id(activity.id)).to be_nil
   end
 end

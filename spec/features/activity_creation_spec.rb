@@ -18,7 +18,7 @@ feature 'Creating activities', js: true do
 
     click_on 'Add'
 
-    expect(user.activities.find_by_name(activity_attributes[:name])).not_to be_nil
     expect(page).to have_content(activity_attributes[:name])
+    expect(Activity.find_by_name(activity_attributes[:name])).not_to be_nil
   end
 end

@@ -38,15 +38,15 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
       $scope.editingUser == user
 
     $scope.save = ()->
-      $scope.editingUser.first_name = $scope.editedUser.first_name
-      $scope.editingUser.last_name = $scope.editedUser.last_name
-      $scope.editingUser.role = $scope.editedUser.role
-      $scope.editingUser.email = $scope.editedUser.email
-      $scope.editingUser.hours_per_day = $scope.editedUser.hours_per_day
       users.update(
         null,
-        $scope.editingUser,
-        ()->
+        $scope.editedUser,
+        (user)->
+          $scope.editingUser.first_name = user.first_name
+          $scope.editingUser.last_name = user.last_name
+          $scope.editingUser.role = user.role
+          $scope.editingUser.email = user.email
+          $scope.editingUser.hours_per_day = user.hours_per_day
           $scope.editingUser = null
       )
 

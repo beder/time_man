@@ -12,6 +12,7 @@ class Ability
       can :manage, Activity, user_id: user.id
       can :manage, User
       cannot :destroy, User, id: user.id
+      cannot :destroy, User, role: 'admin'
     elsif user.role.to_sym == :admin
       can :manage, Activity
       can :manage, User

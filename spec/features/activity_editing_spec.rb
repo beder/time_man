@@ -18,8 +18,8 @@ feature 'Editing activities', js: true do
     fill_in 'edited_hours', with: another_activity.hours
     click_on 'Save'
 
-    expect(user.activities.find_by_name(another_activity.name)).not_to be_nil
     expect(page).not_to have_content(an_activity.name)
     expect(page).to have_content(another_activity.name)
+    expect(Activity.find_by_name(another_activity.name)).not_to be_nil
   end
 end
