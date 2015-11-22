@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$location', '$uibModal', 'users',
-  ($scope, $routeParams, $location, $uibModal, users)->
+controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$location', '$uibModal', 'users', 'authentication',
+  ($scope, $routeParams, $location, $uibModal, users, authentication)->
     $scope.add = (first_name, last_name, role, email, hours_per_day, password, password_confirmation)->
       users.save(
         null,
@@ -70,6 +70,18 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
             $scope.users = $scope.users.filter (a)-> a isnt user
         )
       )
+
+    $scope.activities = (user)-> $location.path("/users/#{user.id}/activities")
+
+    $scope.currentUser = (user)-> "#{user.id}" == "#{authentication.getSession().user.id}"
+
+    users.get(
+      {
+        userId: authentication.getSession().user.id
+      },
+      (user)->
+        $scope.admin = user.role == 'admin'
+    )
 
     users.query(
       null,

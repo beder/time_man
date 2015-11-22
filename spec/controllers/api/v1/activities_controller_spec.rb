@@ -13,7 +13,7 @@ describe Api::V1::ActivitiesController do
   describe 'create' do
     let(:activity_attributes) { attributes_for(:activity, name: 'New activity') }
     before do
-      xhr :post, :create, format: :json, activity: activity_attributes
+      xhr :post, :create, format: :json, user_id: user.id, activity: activity_attributes
     end
 
     describe 'response' do
@@ -36,7 +36,7 @@ describe Api::V1::ActivitiesController do
     let(:an_activity) { create(:activity, name: 'An activity', date: '2015-01-02', user: user) }
     let(:another_activity) { create(:activity, name: 'Another activity', date: '2015-03-04', user: user) }
     before do
-      xhr :get, :index, format: :json, date_from: date_from, date_to: date_to
+      xhr :get, :index, format: :json, user_id: user.id, date_from: date_from, date_to: date_to
     end
 
     subject(:results) { JSON.parse(response.body) }
@@ -85,7 +85,7 @@ describe Api::V1::ActivitiesController do
     let(:activity) { create(:activity, name: 'Previous name', user: user) }
     let(:edited_activity) { build(:activity, name: 'New name') }
     before do
-      xhr :put, :update, format: :json, id: activity.id, activity: attributes_for(:activity, name: edited_activity.name)
+      xhr :put, :update, format: :json, user_id: user.id, id: activity.id, activity: attributes_for(:activity, name: edited_activity.name)
     end
 
     describe 'response' do
@@ -106,7 +106,7 @@ describe Api::V1::ActivitiesController do
   describe 'destroy' do
     let(:activity) { create(:activity, user: user) }
     before do
-      xhr :delete, :destroy, format: :json, id: activity.id
+      xhr :delete, :destroy, format: :json, user_id: user.id, id: activity.id
     end
 
     describe 'response' do

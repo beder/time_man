@@ -2,11 +2,13 @@ controllers = angular.module('controllers')
 
 controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'activities', 'authentication', 'users',
   ($scope, $routeParams, $location, $uibModal, activities, authentication, users)->
-    $scope.search = (date_from, date_to)-> $location.path('/').search({date_from: date_from, date_to: date_to})
+    $scope.search = (date_from, date_to)-> $location.path($location.path()).search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->
       activities.save(
-        null,
+        {
+          userId: $scope.userId
+        },
         {
           activity: {
             name: name,
@@ -36,7 +38,9 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
       $scope.editingActivity.date = $scope.editedActivity.date
       $scope.editingActivity.hours = $scope.editedActivity.hours
       activities.update(
-        null,
+        {
+          userId: $scope.userId
+        },
         $scope.editingActivity,
         ()->
           $scope.editingActivity = null
@@ -56,7 +60,9 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
       })
       modalInstance.result.then(()->
         activities.delete(
-          null,
+          {
+            userId: $scope.userId
+          },
           activity,
           ()->
             $scope.activities = $scope.activities.filter (a)-> a isnt activity
@@ -70,17 +76,30 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
 
       if hoursPerDay >= $scope.hoursPerDay then 'panel-success' else 'panel-danger'
 
+    $scope.userId = $routeParams.userId || authentication.getSession().user.id
+
     $scope.date_from = $routeParams.date_from
 
     $scope.date_to = $routeParams.date_to
 
     users.get(
       {
-        userId: authentication.getSession().user.id
+        userId: $scope.userId
       },
       (user)->
+        currentUser = "#{$scope.userId}" == "#{authentication.getSession().user.id}"
+        $scope.userName = "#{user.first_name} #{user.last_name}"
         $scope.hoursPerDay = user.hours_per_day
+        $scope.title = if currentUser then 'Activities' else "#{$scope.userName}'s activities"
     )
 
-    activities.query(date_from: $routeParams.date_from, date_to: $routeParams.date_to, (results)-> $scope.activities = results)
+    activities.query(
+      {
+        userId: $scope.userId,
+        date_from: $routeParams.date_from,
+        date_to: $routeParams.date_to
+      },
+      (results)->
+        $scope.activities = results
+    )
 ])

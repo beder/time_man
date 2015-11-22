@@ -12,7 +12,10 @@ time_man.config(['$routeProvider',
   ($routeProvider)->
     $routeProvider
       .when('/',
-        templateUrl: 'index.html',
+        redirectTo: '/activities'
+      )
+      .when('/activities',
+        templateUrl: 'activities/index.html',
         controller: 'ActivitiesController'
       )
       .when('/sessions/new',
@@ -26,6 +29,10 @@ time_man.config(['$routeProvider',
       .when('/users',
         templateUrl: 'users/index.html',
         controller: 'UsersIndexController'
+      )
+      .when('/users/:userId/activities',
+        templateUrl: 'activities/index.html',
+        controller: 'ActivitiesController'
       )
       .when('/settings',
         templateUrl: 'settings/edit.html',

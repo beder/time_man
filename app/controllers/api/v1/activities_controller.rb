@@ -1,5 +1,7 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
-  load_and_authorize_resource
+  load_and_authorize_resource through: :target_user
+
+  before_action :validate_create_ability, only: :create
 
   def create
     @activity.save
@@ -16,17 +18,21 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def destroy
-    user.activities.destroy(@activity)
+    @activity.destroy
     head(:ok)
   end
 
   private
 
+  def validate_create_ability
+    raise CanCan::AccessDenied.new if current_user.id.to_s != params[:user_id].to_s && current_user.role.to_sym != :admin
+  end
+
   def activity_params
     params.require(:activity).permit(:name, :date, :hours)
   end
 
-  def user
-    current_user
+  def target_user
+    User.find(params[:user_id])
   end
 end

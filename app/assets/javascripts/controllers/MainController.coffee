@@ -2,7 +2,7 @@ controllers = angular.module('controllers')
 
 controllers.controller('MainController', ['$scope', '$location', 'authentication',
   ($scope, $location, authentication)->
-    $scope.activities = ()-> $location.path('/')
+    $scope.activities = ()-> $location.path('/activities')
 
     $scope.users = ()-> $location.path('/users')
 

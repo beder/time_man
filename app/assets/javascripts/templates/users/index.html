@@ -6,7 +6,8 @@
                 <div class="panel-heading">
                     <div ng-hide="editing(user)" class="row">
                         <div class="col-md-8">
-                            <h2 class="panel-title">{{user.first_name}} {{user.last_name}}</h2>
+                            <h2 class="panel-title" ng-show="admin"><a href ng-click="activities(user)">{{user.first_name}} {{user.last_name}}</a></h2>
+                            <h2 class="panel-title" ng-hide="admin">{{user.first_name}} {{user.last_name}}</h2>
                         </div>
                         <div class="col-md-4">
                             <h4 class="panel-title">{{user.role}}</h4>
