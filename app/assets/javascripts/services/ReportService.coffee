@@ -27,24 +27,45 @@ services.factory('report', [
           ''
 
       contents: (activities)->
-        activities.reduce(
-          (
-            (report, a)->
-              "
-              #{report}
-              <li>
-                  #{a.name}
-                  <ul>
-                      <li>Date: #{a.date}</li>
-                      <li>Hours: #{a.hours}</li>
-                  </ul>
-              </li>
-              "
-          ),
-          ''
-        )
+        dates = activities
+          .reduce(
+            (
+              (by_date, a)->
+                if by_date[a.date]
+                  by_date[a.date].push(a)
+                else
+                  by_date[a.date] = [a]
+                by_date
+            ),
+            {}
+          )
+
+        Object.keys(dates)
+          .reduce(
+            (
+              (report, d)=>
+                "
+                #{report}
+                <li>
+                    <p>Date: #{d}</p>
+                    <p>Total hours: #{@total_hours(dates[d])}</p>
+                    <p>Activities:</p>
+                    <ul>
+                        #{@activity_names(dates[d])}
+                    </ul>
+                </li>
+                "
+            ),
+            ''
+          )
+
+      total_hours: (date)->
+        date.reduce ((sum, a)-> sum + a.hours), 0
+
+      activity_names: (date)->
+        date.reduce ((names, a)-> "#{names}<li>#{a.name}</li>"), ''
 
       present: (value)->
-          value? and value.length > 0
+        value? and value.length > 0
     }
 ])
