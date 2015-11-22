@@ -1,5 +1,6 @@
 time_man = angular.module('time_man',[
   'templates',
+  'ngFileSaver',
   'ngRoute',
   'ngResource',
   'ngCookies',

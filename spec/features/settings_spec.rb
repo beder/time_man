@@ -16,7 +16,7 @@ feature 'Changing user settings', js: true do
     fill_in 'hours_per_day', with: 8
     click_on 'Save'
 
-    expect(User.find(user.id).hours_per_day).to eq(8)
     expect(page).to have_content('Activities')
+    expect(User.find(user.id).hours_per_day).to eq(8)
   end
 end

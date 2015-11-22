@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'activities', 'authentication', 'users',
-  ($scope, $routeParams, $location, $uibModal, activities, authentication, users)->
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'FileSaver', 'Blob', 'activities', 'authentication', 'users', 'report',
+  ($scope, $routeParams, $location, $uibModal, FileSaver, Blob, activities, authentication, users, report)->
     $scope.search = (date_from, date_to)-> $location.path($location.path()).search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->
@@ -75,6 +75,17 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
         .reduce ((sum, a)-> sum + a.hours) , 0
 
       if hoursPerDay >= $scope.hoursPerDay then 'panel-success' else 'panel-danger'
+
+    $scope.download = ->
+      blob = new Blob(
+        [
+          report.build($scope.userName, $scope.date_from, $scope.date_to, $scope.activities)
+        ],
+        {
+          type: 'text/html'
+        }
+      )
+      FileSaver.saveAs(blob, 'activity_report.html')
 
     $scope.userId = $routeParams.userId || authentication.getSession().user.id
 
