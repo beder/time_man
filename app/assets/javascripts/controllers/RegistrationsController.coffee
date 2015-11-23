@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('RegistrationsController', ['$scope', '$location', 'registrations', 'authentication',
-  ($scope, $location, registrations, authentication)->
+controllers.controller('RegistrationsController', ['$scope', '$location', 'registrations', 'authentication', 'errorHandler'
+  ($scope, $location, registrations, authentication, errorHandler)->
     $scope.signup = (first_name, last_name, email, password, password_confirmation)->
       registrations.save(
         null,
@@ -14,9 +14,13 @@ controllers.controller('RegistrationsController', ['$scope', '$location', 'regis
             password_confirmation: password_confirmation
           }
         },
-        (registration)->
-          authentication.setSession(registration.session)
-          $location.path('/')
+        (
+          (registration)->
+            authentication.setSession(registration.session)
+            $location.path('/')
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     $scope.login = ()-> $location.path('/sessions/new')

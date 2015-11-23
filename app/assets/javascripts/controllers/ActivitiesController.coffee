@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'FileSaver', 'Blob', 'activities', 'authentication', 'users', 'report',
-  ($scope, $routeParams, $location, $uibModal, FileSaver, Blob, activities, authentication, users, report)->
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'FileSaver', 'Blob', 'activities', 'authentication', 'users', 'report', 'errorHandler'
+  ($scope, $routeParams, $location, $uibModal, FileSaver, Blob, activities, authentication, users, report, errorHandler)->
     $scope.search = (date_from, date_to)-> $location.path($location.path()).search({date_from: date_from, date_to: date_to})
 
     $scope.add = (name, date, hours)->
@@ -16,11 +16,15 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
             hours: hours
           }
         },
-        (activity)=>
-          $scope.activities.push(activity)
-          @.name = null
-          @.date = null
-          @.hours = null
+        (
+          (activity)=>
+            $scope.activities.push(activity)
+            @name = null
+            @date = null
+            @hours = null
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     $scope.edit = (activity)->
@@ -34,16 +38,20 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
       $scope.editingActivity == activity
 
     $scope.save = ()->
-      $scope.editingActivity.name = $scope.editedActivity.name
-      $scope.editingActivity.date = $scope.editedActivity.date
-      $scope.editingActivity.hours = $scope.editedActivity.hours
       activities.update(
         {
           userId: $scope.userId
         },
-        $scope.editingActivity,
-        ()->
-          $scope.editingActivity = null
+        $scope.editedActivity,
+        (
+          (activity)->
+            $scope.editingActivity.name = activity.name
+            $scope.editingActivity.date = activity.date
+            $scope.editingActivity.hours = activity.hours
+            $scope.editingActivity = null
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     $scope.delete = (activity)->
@@ -64,8 +72,12 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
             userId: $scope.userId
           },
           activity,
-          ()->
-            $scope.activities = $scope.activities.filter (a)-> a isnt activity
+          (
+            ()->
+              $scope.activities = $scope.activities.filter (a)-> a isnt activity
+          ),
+          (error)->
+            errorHandler.handle(error)
         )
       )
 
@@ -97,11 +109,15 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
       {
         userId: $scope.userId
       },
-      (user)->
-        currentUser = "#{$scope.userId}" == "#{authentication.getSession().user.id}"
-        $scope.userName = "#{user.first_name} #{user.last_name}"
-        $scope.hoursPerDay = user.hours_per_day
-        $scope.title = if currentUser then 'Activities' else "#{$scope.userName}'s activities"
+      (
+        (user)->
+          currentUser = "#{$scope.userId}" == "#{authentication.getSession().user.id}"
+          $scope.userName = "#{user.first_name} #{user.last_name}"
+          $scope.hoursPerDay = user.hours_per_day
+          $scope.title = if currentUser then 'Activities' else "#{$scope.userName}'s activities"
+      ),
+      (error)->
+        errorHandler.handle(error)
     )
 
     activities.query(
@@ -110,7 +126,11 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
         date_from: $routeParams.date_from,
         date_to: $routeParams.date_to
       },
-      (results)->
-        $scope.activities = results
+      (
+        (results)->
+          $scope.activities = results
+      ),
+      (error)->
+        errorHandler.handle(error)
     )
 ])

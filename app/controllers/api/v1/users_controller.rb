@@ -3,7 +3,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   load_and_authorize_resource
 
   def create
-    @user.save
+    raise(ArgumentError.new(@user.errors.full_messages)) unless @user.save
   end
 
   def index
@@ -13,7 +13,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def update
-    @user.update_attributes(update_params)
+    raise(ArgumentError.new(@user.errors.full_messages)) unless @user.update_attributes(update_params)
   end
 
   def destroy

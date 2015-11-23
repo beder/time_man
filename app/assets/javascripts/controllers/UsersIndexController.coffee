@@ -1,7 +1,7 @@
 controllers = angular.module('controllers')
 
-controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$location', '$uibModal', 'users', 'authentication',
-  ($scope, $routeParams, $location, $uibModal, users, authentication)->
+controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$location', '$uibModal', 'users', 'authentication', 'errorHandler',
+  ($scope, $routeParams, $location, $uibModal, users, authentication, errorHandler)->
     $scope.add = (first_name, last_name, role, email, hours_per_day, password, password_confirmation)->
       users.save(
         null,
@@ -16,15 +16,19 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
             password_confirmation: password_confirmation
           }
         },
-        (user)=>
-          $scope.users.push(user)
-          @first_name = null
-          @last_name = null
-          @role = null
-          @email = null
-          @hours_per_day = null
-          @password = null
-          @password_confirmation = null
+        (
+          (user)=>
+            $scope.users.push(user)
+            @first_name = null
+            @last_name = null
+            @role = null
+            @email = null
+            @hours_per_day = null
+            @password = null
+            @password_confirmation = null
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     $scope.edit = (user)->
@@ -41,13 +45,17 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
       users.update(
         null,
         $scope.editedUser,
-        (user)->
-          $scope.editingUser.first_name = user.first_name
-          $scope.editingUser.last_name = user.last_name
-          $scope.editingUser.role = user.role
-          $scope.editingUser.email = user.email
-          $scope.editingUser.hours_per_day = user.hours_per_day
-          $scope.editingUser = null
+        (
+          (user)->
+            $scope.editingUser.first_name = user.first_name
+            $scope.editingUser.last_name = user.last_name
+            $scope.editingUser.role = user.role
+            $scope.editingUser.email = user.email
+            $scope.editingUser.hours_per_day = user.hours_per_day
+            $scope.editingUser = null
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     $scope.delete = (user)->
@@ -66,8 +74,12 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
         users.delete(
           null,
           user,
-          ()->
-            $scope.users = $scope.users.filter (a)-> a isnt user
+          (
+            ()->
+              $scope.users = $scope.users.filter (a)-> a isnt user
+          ),
+          (error)->
+            errorHandler.handle(error)
         )
       )
 
@@ -79,13 +91,21 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
       {
         userId: authentication.getSession().user.id
       },
-      (user)->
-        $scope.admin = user.role == 'admin'
+      (
+        (user)->
+          $scope.admin = user.role == 'admin'
+      ),
+      (error)->
+        errorHandler.handle(error)
     )
 
     users.query(
       null,
-      (results)->
-        $scope.users = results
+      (
+        (results)->
+          $scope.users = results
+      ),
+      (error)->
+        errorHandler.handle(error)
     )
 ])

@@ -3,6 +3,7 @@
 //= require angular-resource/angular-resource
 //= require angular-cookies/angular-cookies
 //= require angular-file-saver/dist/angular-file-saver.bundle
+//= require angular-flash-alert/dist/angular-flash
 //= require angular-bootstrap/ui-bootstrap-tpls
 //= require angular-rails-templates
 //= require_tree ./templates

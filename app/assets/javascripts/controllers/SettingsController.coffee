@@ -8,15 +8,23 @@ controllers.controller('SettingsController', ['$scope', '$location', 'users', 'a
       users.update(
         null,
         $scope.user,
-        ()->
-          $location.path('/')
+        (
+          ()->
+            $location.path('/')
+        ),
+        (error)->
+          errorHandler.handle(error)
       )
 
     users.get(
       {
         userId: authentication.getSession().user.id
       },
-      (user)->
-        $scope.user = user
+      (
+        (user)->
+          $scope.user = user
+      ),
+      (error)->
+        errorHandler.handle(error)
     )
 ])

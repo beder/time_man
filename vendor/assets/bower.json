@@ -8,6 +8,7 @@
     "angular-cookies": "latest",
     "angular-bootstrap": "latest",
     "angular-file-saver": "latest",
+    "angular-flash-alert": "latest",
     "bootstrap-sass-official": "latest"
   }
 }
