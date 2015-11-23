@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   after_initialize :set_default_role
 
-  has_many :activities
+  has_many :activities, dependent: :destroy
 
   def set_default_role
     self.role ||= :user if self.new_record?

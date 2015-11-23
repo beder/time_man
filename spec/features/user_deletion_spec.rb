@@ -4,6 +4,7 @@ feature 'User deletion', js: true do
   let!(:admin) { create(:admin) }
   let!(:manager) { create(:manager) }
   let!(:user) { create(:user) }
+  let!(:activity) { create(:activity, user: user) }
 
   scenario 'admin deletes managers' do
     visit '/'
