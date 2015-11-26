@@ -19,7 +19,7 @@ feature 'User creation', js: true do
     fill_in 'first_name', with: user_attributes[:first_name]
     fill_in 'last_name', with: user_attributes[:last_name]
     fill_in 'email', with: user_attributes[:email]
-    fill_in 'role', with: user_attributes[:role]
+    select user_attributes[:role], from: 'role'
     fill_in 'password', with: user_attributes[:password]
     fill_in 'password_confirmation', with: user_attributes[:password_confirmation]
 
@@ -44,7 +44,7 @@ feature 'User creation', js: true do
     fill_in 'first_name', with: user_attributes[:first_name]
     fill_in 'last_name', with: user_attributes[:last_name]
     fill_in 'email', with: user_attributes[:email]
-    fill_in 'role', with: user_attributes[:role]
+    select user_attributes[:role], from: 'role'
     fill_in 'password', with: user_attributes[:password]
     fill_in 'password_confirmation', with: user_attributes[:password_confirmation]
 

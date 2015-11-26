@@ -83,6 +83,8 @@ controllers.controller('UsersIndexController', ['$scope', '$routeParams', '$loca
         )
       )
 
+    $scope.roles = ['user', 'manager', 'admin']
+
     $scope.activities = (user)-> $location.path("/users/#{user.id}/activities")
 
     $scope.currentUser = (user)-> "#{user.id}" == "#{authentication.getSession().user.id}"

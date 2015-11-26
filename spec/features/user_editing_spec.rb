@@ -23,7 +23,7 @@ feature 'Editing users', js: true do
     fill_in 'edited_first_name', with: user_attributes[:first_name]
     fill_in 'edited_last_name', with: user_attributes[:last_name]
     fill_in 'edited_email', with: user_attributes[:email]
-    fill_in 'edited_role', with: user_attributes[:role]
+    select user_attributes[:role], from: 'edited_role'
 
     click_on 'Save'
 
@@ -74,7 +74,7 @@ feature 'Editing users', js: true do
       click_on('Edit')
     end
 
-    fill_in 'edited_role', with: 'admin'
+    select 'admin', from: 'edited_role'
 
     click_on 'Save'
 
