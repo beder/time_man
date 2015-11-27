@@ -11,6 +11,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   def index
     @activities = @activities.happened_after(params[:date_from])
                              .happened_before(params[:date_to])
+                             .oldest_first
   end
 
   def update
