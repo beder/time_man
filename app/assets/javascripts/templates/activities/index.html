@@ -5,11 +5,21 @@
     <form>
         <div class="form-group col-md-3 col-md-offset-3">
             <label for="date_from" class="sr-only">From</label>
-            <input ng-model="date_from" name="date_from" type="text" autofocus class="form-control" placeholder="From">
+            <div class="input-group">
+                <input type="text" name="date_from" class="form-control" uib-datepicker-popup="{{dateFormat}}" ng-model="date_from" is-open="dateStatus.date_from_opened" datepicker-options="dateOptions" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDateFrom()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
         </div>
         <div class="form-group col-md-3">
             <label for="date_to" class="sr-only">To</label>
-            <input ng-model="date_to" name="date_to" type="text" autofocus class="form-control" placeholder="To">
+            <div class="input-group">
+                <input type="text" name="date_to" class="form-control" uib-datepicker-popup="{{dateFormat}}" ng-model="date_to" is-open="dateStatus.date_to_opened" datepicker-options="dateOptions" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDateTo()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
         </div>
         <div class="form-group col-md-6 col-md-offset-3 text-right">
             <button ng-click="search(date_from, date_to)" class="btn btn-primary btn-lg">Search</button>
@@ -35,10 +45,15 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-md-4">
-                        <span ng-hide="editing(activity)">{{activity.date}}</span>
+                        <span ng-hide="editing(activity)">{{activity.date | date: dateFormat}}</span>
                         <span ng-show="editing(activity)">
                             <label for="edited_date" class="sr-only">Date</label>
-                            <input data-ng-model="editedActivity.date" name="edited_date" type="text" autofocus class="form-control" placeholder="Date">
+                            <div class="input-group">
+                                <input type="text" name="edited_date" class="form-control" uib-datepicker-popup="{{dateFormat}}" data-ng-model="editedActivity.date" is-open="dateStatus.edited_date_opened" datepicker-options="dateOptions" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openEditedDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
                         </span>
                     </div>
                     <div class="col-md-4 text-center">
@@ -64,7 +79,12 @@
                 <div class="panel-body">
                     <div class="col-md-4">
                         <label for="date" class="sr-only">Date</label>
-                        <input ng-model="date" name="date" type="text" autofocus class="form-control" placeholder="Date">
+                        <div class="input-group">
+                            <input type="text" name="date" class="form-control" uib-datepicker-popup="{{dateFormat}}" ng-model="date" is-open="dateStatus.date_opened" datepicker-options="dateOptions" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
                     </div>
                     <div class="col-md-4 text-center">
                         <label for="hours" class="sr-only">Hours</label>

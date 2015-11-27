@@ -1,8 +1,13 @@
 controllers = angular.module('controllers')
 
-controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$uibModal', 'FileSaver', 'Blob', 'activities', 'authentication', 'users', 'report', 'errorHandler'
-  ($scope, $routeParams, $location, $uibModal, FileSaver, Blob, activities, authentication, users, report, errorHandler)->
-    $scope.search = (date_from, date_to)-> $location.path($location.path()).search({date_from: date_from, date_to: date_to})
+controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$location', '$filter', '$uibModal', 'FileSaver', 'Blob', 'activities', 'authentication', 'users', 'report', 'errorHandler'
+  ($scope, $routeParams, $location, $filter, $uibModal, FileSaver, Blob, activities, authentication, users, report, errorHandler)->
+    $scope.search = (date_from, date_to)->
+      $location.path($location.path())
+               .search({
+                 date_from: $filter('date')(date_from, $scope.dateFormat),
+                 date_to: $filter('date')(date_to, $scope.dateFormat)
+               })
 
     $scope.add = (name, date, hours)->
       activities.save(
@@ -12,7 +17,7 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
         {
           activity: {
             name: name,
-            date: date,
+            date: $filter('date')(date, $scope.dateFormat),
             hours: hours
           }
         },
@@ -40,9 +45,16 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
     $scope.save = ()->
       activities.update(
         {
-          userId: $scope.userId
+          userId: $scope.userId,
+          activityId: $scope.editedActivity.id
         },
-        $scope.editedActivity,
+        {
+          activity: {
+            name: $scope.editedActivity.name,
+            date: $filter('date')($scope.editedActivity.date, $scope.dateFormat),
+            hours: $scope.editedActivity.hours
+          }
+        },
         (
           (activity)->
             $scope.editingActivity.name = activity.name
@@ -99,11 +111,36 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
       )
       FileSaver.saveAs(blob, 'activity_report.html')
 
+    $scope.dateFormat = 'yyyy-MM-dd'
+
+    $scope.dateStatus = {
+      date_from_opened: false,
+      date_to_opened: false,
+      edited_date_opened: false,
+      date_opened: false
+    }
+
+    $scope.openDateFrom = ->
+      $scope.dateStatus.date_from_opened = true
+
+    $scope.openDateTo = ->
+      $scope.dateStatus.date_to_opened = true
+
+    $scope.openEditedDate = ->
+      $scope.dateStatus.edited_date_opened = true
+
+    $scope.openDate = ->
+      $scope.dateStatus.date_opened = true
+
+    $scope.dateOptions = {
+      showWeeks: false
+    }
+
     $scope.userId = $routeParams.userId || authentication.getSession().user.id
 
-    $scope.date_from = $routeParams.date_from
+    $scope.date_from = $filter('date')($routeParams.date_from, $scope.dateFormat)
 
-    $scope.date_to = $routeParams.date_to
+    $scope.date_to = $filter('date')($routeParams.date_to, $scope.dateFormat)
 
     users.get(
       {
@@ -123,8 +160,8 @@ controllers.controller('ActivitiesController', ['$scope', '$routeParams', '$loca
     activities.query(
       {
         userId: $scope.userId,
-        date_from: $routeParams.date_from,
-        date_to: $routeParams.date_to
+        date_from: $filter('date')($routeParams.date_from, $scope.dateFormat),
+        date_to: $filter('date')($routeParams.date_to, $scope.dateFormat)
       },
       (
         (results)->
